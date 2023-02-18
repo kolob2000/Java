@@ -5,48 +5,37 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.sql.Array;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        writeTest100Times();
-        System.out.println(isPalindrome("шалаш"));
-        System.out.println(isPalindrome("алкаш"));
+        ArrayList<Integer> array = new ArrayList<Integer>();
+        for (int i = 0; i < 20; i++) {
+            array.add(new Random().nextInt(20));
+        }
+        System.out.println(array.toString() + " origin list");
+        System.out.println(minMaxAvgFromList(array).toString() + " <- min max avg");
+        array.removeIf(i -> i % 2 == 0);
+        System.out.println(array.toString() + " odd list");
     }
 
-    private static void writeTest100Times() {
-        Path file = Path.of("file.txt");
-        if (!Files.exists(file)) {
-            try {
-                Files.createFile(file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+    private static ArrayList<Integer> minMaxAvgFromList(ArrayList<Integer> list) {
+        int min = list.get(0);
+        int max = min;
+        int avg = 0;
+        for (int i = 0; i < list.size(); i++) {
+            int current = list.get(i);
+            if (min > current) {
+                min = current;
             }
-        }
-        try {
-            Files.writeString(file, "TEST\n");
-            for (int i = 0; i < 99; i++) {
-                Files.writeString(file, "TEST\n", StandardOpenOption.APPEND);
-
+            if (max < current) {
+                max = current;
             }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            avg += current;
         }
+        return new ArrayList<>(List.of(min, max, avg));
     }
 
-    private static boolean isPalindrome(String str) {
-        boolean isP = true;
-        for (int i = 0; i < str.length() / 2; i++) {
-            if (!Objects.equals(str.charAt(i), str.charAt(str.length() - i - 1))) {
-                isP = false;
-                break;
-            }
-        }
-
-        return isP;
-    }
 }
