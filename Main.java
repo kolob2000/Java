@@ -10,32 +10,30 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
+        strParser();
 
-        ArrayList<Integer> array = new ArrayList<Integer>();
-        for (int i = 0; i < 20; i++) {
-            array.add(new Random().nextInt(20));
-        }
-        System.out.println(array.toString() + " origin list");
-        System.out.println(minMaxAvgFromList(array).toString() + " <- min max avg");
-        array.removeIf(i -> i % 2 == 0);
-        System.out.println(array.toString() + " odd list");
     }
 
-    private static ArrayList<Integer> minMaxAvgFromList(ArrayList<Integer> list) {
-        int min = list.get(0);
-        int max = min;
-        int avg = 0;
-        for (int i = 0; i < list.size(); i++) {
-            int current = list.get(i);
-            if (min > current) {
-                min = current;
+    public static void strParser() {
+        Scanner sc = new Scanner(System.in);
+        LinkedList<String> strList = new LinkedList<>();
+        while (true) {
+            String str = sc.nextLine();
+            if (str.trim().equalsIgnoreCase("exit")) return;
+            String[] splitStrArray = str.split("~");
+            if (splitStrArray[0].equals("print") && strList.size() >= Integer.parseInt(splitStrArray[1])) {
+                System.out.println(strList.get(Integer.parseInt(splitStrArray[1])));
+                strList.add(Integer.parseInt(splitStrArray[1]), null);
+            } else {
+                int size = strList.size();
+                while (strList.size() < Integer.parseInt(splitStrArray[1])) {
+                    strList.add(size, null);
+                    size++;
+                }
+                strList.add(Integer.parseInt(splitStrArray[1]), splitStrArray[0]);
             }
-            if (max < current) {
-                max = current;
-            }
-            avg += current;
+
         }
-        return new ArrayList<>(List.of(min, max, avg));
     }
 
 }
