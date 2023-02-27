@@ -10,30 +10,36 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        strParser();
-
+        System.out.println(correctParenthesis("(([]))<>()"));
+        System.out.println(correctParenthesis(">(([]))<>()"));
+        System.out.println(correctParenthesis("(([]))<>>(()"));
     }
 
-    public static void strParser() {
-        Scanner sc = new Scanner(System.in);
-        LinkedList<String> strList = new LinkedList<>();
-        while (true) {
-            String str = sc.nextLine();
-            if (str.trim().equalsIgnoreCase("exit")) return;
-            String[] splitStrArray = str.split("~");
-            if (splitStrArray[0].equals("print") && strList.size() >= Integer.parseInt(splitStrArray[1])) {
-                System.out.println(strList.get(Integer.parseInt(splitStrArray[1])));
-                strList.add(Integer.parseInt(splitStrArray[1]), null);
-            } else {
-                int size = strList.size();
-                while (strList.size() < Integer.parseInt(splitStrArray[1])) {
-                    strList.add(size, null);
-                    size++;
+    public static boolean isClosed(Character ch) {
+        List<Character> closed = Arrays.asList(')', ']', '}', '>');
+        return closed.contains(ch);
+    }
+
+    public static boolean correctParenthesis(String s) {
+        HashMap<Character, Character> brackets = new HashMap<>();
+        brackets.put(')', '(');
+        brackets.put(']', '[');
+        brackets.put('}', '{');
+        brackets.put('>', '<');
+        Stack<Character> stack = new Stack<>();
+        for (Character ch : s.toCharArray()) {
+            if (isClosed(ch) && stack.size() > 0) {
+                if (brackets.get(ch) == stack.lastElement()) {
+                    stack.pop();
+                } else {
+                    return false;
                 }
-                strList.add(Integer.parseInt(splitStrArray[1]), splitStrArray[0]);
+
+            } else {
+                stack.push(ch);
             }
-
         }
-    }
+        return stack.size() == 0;
 
+    }
 }
