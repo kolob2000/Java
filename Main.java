@@ -16,7 +16,7 @@ public class Main {
         System.out.println(correctParenthesis("()[]{}<>"));
         System.out.println(correctParenthesis("()[]{}<>"));
         System.out.println(correctParenthesis("()[]{}<>"));
-        System.out.println(correctParenthesis("[]{}((<>))"));
+        System.out.println(correctParenthesis("[]{}((< >))"));
         System.out.println(correctParenthesis("[]{}(<)>"));
     }
 
@@ -33,6 +33,7 @@ public class Main {
         brackets.put('>', '<');
         Stack<Character> stack = new Stack<>();
         for (Character ch : s.toCharArray()) {
+            if(ch.equals(' ')) continue;
             if (isClosed(ch)) {
                 if (stack.size() == 0) return false;
                 if (brackets.get(ch).equals(stack.lastElement())) {
