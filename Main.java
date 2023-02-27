@@ -28,7 +28,8 @@ public class Main {
         brackets.put('>', '<');
         Stack<Character> stack = new Stack<>();
         for (Character ch : s.toCharArray()) {
-            if (isClosed(ch) && stack.size() > 0) {
+            if (isClosed(ch)) {
+                if (stack.size() == 0) return false;
                 if (brackets.get(ch) == stack.lastElement()) {
                     stack.pop();
                 } else {
