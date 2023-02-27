@@ -13,6 +13,11 @@ public class Main {
         System.out.println(correctParenthesis("(([]))<>()"));
         System.out.println(correctParenthesis(">(([]))<>()"));
         System.out.println(correctParenthesis("(([]))<>>(()"));
+        System.out.println(correctParenthesis("()[]{}<>"));
+        System.out.println(correctParenthesis("()[]{}<>"));
+        System.out.println(correctParenthesis("()[]{}<>"));
+        System.out.println(correctParenthesis("[]{}((<>))"));
+        System.out.println(correctParenthesis("[]{}(<)>"));
     }
 
     public static boolean isClosed(Character ch) {
@@ -30,7 +35,7 @@ public class Main {
         for (Character ch : s.toCharArray()) {
             if (isClosed(ch)) {
                 if (stack.size() == 0) return false;
-                if (brackets.get(ch) == stack.lastElement()) {
+                if (brackets.get(ch).equals(stack.lastElement())) {
                     stack.pop();
                 } else {
                     return false;
