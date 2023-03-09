@@ -1,53 +1,82 @@
-import java.sql.Array;
 
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
-        /**
-         * Создать класс Player с полями id (long),
-         * name (String), damage (double) healthPoint (hp) (double)
-         * У класса должен быть конструктор, который принимает только name.
-         * Идентификатор присваивается автоматически из последовательности (1, 2, ...)
-         * Каждый класс должен уметь "бить" другого Player'а void attack(Player player)
-         * -> player1.attack(player2) Внутри метода игрок,
-         * на котором вызван метод уменьшает здоровье игрока,
-         * который передан в метод Придумать несколько классов с
-         * разными параметрами жизней и атаки по-умолчанию Player player = new Tank("name");
-         * *2 Придумать, все, что захочется и обогатить проект
-         * 3Понасоздавать объектов и стравить их друг с другом
-         *
-         *
-         * */
-        Player tank = new Tank("T-90");
-        Player batman = new Batman("Batman");
-        Player robin = new Batman("Robin");
-        Player spiderMan = new SpiderMan("Peter");
-        Player alesha = new Warrior("Alesha");
-        Player max = new Warrior("Max");
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_BLACK = "\u001B[30m";
 
-        System.out.println(tank);
-        System.out.println(batman);
-        batman.attack(tank);
-        tank.attack(batman);
-        System.out.println(tank);
-        System.out.println(batman);
-        System.out.println();
-/////////////////////////////////////////////////////////
-        System.out.println(robin);
-        System.out.println(alesha);
-        robin.attack(alesha);
-        alesha.attack(robin);
-        System.out.println(robin);
-        System.out.println(alesha);
-        System.out.println();
-/////////////////////////////////////////////////////////
-        System.out.println(spiderMan);
-        System.out.println(max);
-        spiderMan.attack(max);
-        max.attack(spiderMan);
-        System.out.println(spiderMan);
-        System.out.println(max);
+    public static void main(String[] args) {
+        // Представьте, что вы пишете класс Reder, который отвечает за вывод на экран текущего уровня жизней и усталости какого-то объекта.
+        // (Подразумеваем, что вывод на экран - это просто печать в консоль)
+        // У класса есть 1 метод, который принимает тип Object и делает следующее:
+        // 1. Если object типа HasHealthPoint, то выводим его уровень жизни
+        // 2. Если object типа Tiredness, то выводим его уровень усталости
+        // При этом текст значения должен иметь цвет в соответствии с правилом:
+        // BLACK(0, 24), RED(25, 50), GREEN(51-100)
+        // 3. Создать несколько классов:
+        // 3.1 Здание. Имеет только жизни.
+        // 3.2 Персноаж. Имеет и жизни, и усталость
+
+//        System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
+        System.out.println("[-------------------------------------------------------------------------------                                         ]");
+
+        Building building = new Building(100, 40);
+
+        Render render = new Render();
+        render.render(building); // 40 - написано красным цветом
+    }
+
+    static class Render {
+
+        public void render(Object object) {
+            // TODO: 06.03.2023 Добавить реализацию
+            if (object instanceof HasHealthPoint hasHealthPoint) {
+
+            }
+        }
 
     }
+
+    interface HasHealthPoint {
+
+        int getMaxHealthPoint();
+
+        int getCurrentHealthPoint();
+
+    }
+
+    interface Tiredness {
+
+        // Максимальное значение уровеня бодрости объекта
+        int getMaxEnergy();
+
+        // Текущее значение уровеня бодрости объекта
+        int getCurrentEnergy();
+
+    }
+
+    static class Building implements HasHealthPoint {
+
+        private final int maxHealthPoint;
+        private int currentHealthPoint;
+
+        public Building(int maxHealthPoint, int currentHealthPoint) {
+            this.maxHealthPoint = maxHealthPoint;
+            this.currentHealthPoint = currentHealthPoint;
+        }
+
+        @Override
+        public int getMaxHealthPoint() {
+            return maxHealthPoint;
+        }
+
+        @Override
+        public int getCurrentHealthPoint() {
+            return currentHealthPoint;
+        }
+    }
+
+
 }
