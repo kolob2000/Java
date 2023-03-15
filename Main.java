@@ -26,16 +26,18 @@ public class Main {
         System.out.println(boxGoldenApple);
         System.out.println(boxOrange);
 
-        boxApple.moveToBox(boxGoldenApple, 3);
-        // Error - boxGoldenApple.moveToBox(boxApple, 3);
+        boxApple.addToBox(boxGoldenApple, 3);
+        boxGoldenApple.moveToBox(boxApple, 3);
+        // Error - boxApple.moveToBox(boxGoldenApple, 3);
         // Error - boxGoldenApple.moveToBox(boxOrange, 3);
+        // Error - boxOrange.moveToBox( boxGoldenApple , 3);
 
         System.out.println(boxApple);
         System.out.println(boxGoldenApple);
         System.out.println(boxOrange);
 
-        for (Object el: boxOrange
-             ) {
+        for (Object el : boxOrange
+        ) {
             System.out.println(el);
 
         }

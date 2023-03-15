@@ -5,14 +5,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Box<T extends Fruit> implements Iterable {
+public class Box<T extends Fruit> implements Iterable<T> {
     List<T> box = new LinkedList<>();
 
     public <U extends T> void add(U fruit) {
         box.add(fruit);
     }
 
-    private void add(List<? extends T> list) {
+    public void add(List<? extends T> list) {
         box.addAll(list);
     }
 
@@ -28,7 +28,7 @@ public class Box<T extends Fruit> implements Iterable {
         return weight;
     }
 
-    public void moveToBox(Box<? extends T> boxFruits, int q) {
+    public void addToBox(Box<? extends T> boxFruits, int q) {
         if (boxFruits.size() <= q) {
 
             add(boxFruits.box);
@@ -39,6 +39,17 @@ public class Box<T extends Fruit> implements Iterable {
         }
 
     }
+
+    public void moveToBox(Box<? super T> boxFruits, int q) {
+        if (box.size() <= q) {
+            boxFruits.add(box);
+            box.clear();
+        } else {
+            boxFruits.add(box.subList(0, q));
+            box.subList(0, q).clear();
+        }
+    }
+
 
     @Override
     public String toString() {
