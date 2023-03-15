@@ -1,89 +1,47 @@
-import java.util.*;
-import java.util.stream.IntStream;
-
 public class Main {
-
-
     public static void main(String[] args) {
-        List<Notebook> notebooks = new LinkedList<>();
-        IntStream.range(0, 10)
-                .map(i -> i)
-                .forEach(i -> notebooks.add(new Notebook(genName(), genMemory(), genPrice())));
 
-        separator();
-        printNotebooks(notebooks);
-        separator();
-        Collections.sort(notebooks);
-        printNotebooks(notebooks);
-        separator();
 
-        notebooks.sort((Notebook a, Notebook b) -> a.price - b.price);
-        printNotebooks(notebooks);
-        separator();
-        notebooks.sort((Notebook a, Notebook b) -> b.price - a.price);
-        printNotebooks(notebooks);
-        separator();
+        Box<Apple> boxApple = new Box<>();
+        Box<GoldenApple> boxGoldenApple = new Box<>();
+        Box<Orange> boxOrange = new Box<>();
 
-        notebooks.sort((Notebook a, Notebook b) -> a.memory - b.memory);
-        printNotebooks(notebooks);
-        separator();
 
-    }
+        boxApple.add(new Apple(1));
+        boxApple.add(new Apple(2));
+        boxApple.add(new Apple(3));
+        boxApple.add(new Apple(4));
 
-    static class Notebook implements Comparable<Notebook> {
-        private final String name;
-        int memory;
-        int price;
+        boxGoldenApple.add(new GoldenApple(5));
+        boxGoldenApple.add(new GoldenApple(6));
+        boxGoldenApple.add(new GoldenApple(7));
+        boxGoldenApple.add(new GoldenApple(8));
 
-        public Notebook(String name, int memory, int price) {
+        boxOrange.add(new Orange(9));
+        boxOrange.add(new Orange(10));
+        boxOrange.add(new Orange(11));
+        boxOrange.add(new Orange(12));
 
-            this.name = name;
-            this.memory = memory;
-            this.price = price;
+        System.out.println(boxApple);
+        System.out.println(boxGoldenApple);
+        System.out.println(boxOrange);
+
+        boxApple.moveToBox(boxGoldenApple, 3);
+        // Error - boxGoldenApple.moveToBox(boxApple, 3);
+        // Error - boxGoldenApple.moveToBox(boxOrange, 3);
+
+        System.out.println(boxApple);
+        System.out.println(boxGoldenApple);
+        System.out.println(boxOrange);
+
+        for (Object el: boxOrange
+             ) {
+            System.out.println(el);
+
         }
 
-        @Override
-        public String toString() {
-            return String.format("| %-10s | %-5s | %-8s |", name, memory, price);
-        }
-
-        @Override
-        public int compareTo(Notebook o) {
-            return Integer.compare(this.name.compareTo(o.name), 0);
-        }
-    }
-
-    public static String genName() {
-        LinkedList<String> name = new LinkedList<>(List.of(
-                "MSI", "LENOVO", "SONY", "HP", "TOSHIBA", "HUAWEI", "XIAOMI",
-                "DELL", "APPLE", "SAMSUNG", "ASUS", "ACER"
-        ));
-        int index = new Random().nextInt(0, name.size());
-        return name.get(index);
-    }
-
-    public static int genPrice() {
-        return new Random().nextInt(40000, 150000);
-    }
-
-    public static int genMemory() {
-        return new Random().nextInt(2, 128);
-    }
-
-    public static void separator() {
-        for (int i = 0; i < 33; i++) {
-            System.out.print("#");
-        }
-        System.out.println();
 
     }
 
-    public static <T extends Notebook> void printNotebooks(List<T> list) {
-
-        for (Notebook n : list
-        ) {
-            System.out.println(n);
-        }
-    }
 }
 
