@@ -1,164 +1,89 @@
-
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class Main {
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_BLACK = "\u001B[30m";
 
     public static void main(String[] args) {
-        // Представьте, что вы пишете класс Reder, который отвечает за вывод на экран текущего уровня жизней и усталости какого-то объекта.
-        // (Подразумеваем, что вывод на экран - это просто печать в консоль)
-        // У класса есть 1 метод, который принимает тип Object и делает следующее:
-        // 1. Если object типа HasHealthPoint, то выводим его уровень жизни
-        // 2. Если object типа Tiredness, то выводим его уровень усталости
-        // При этом текст значения должен иметь цвет в соответствии с правилом:
-        // BLACK(0, 24), RED(25, 50), GREEN(51-100)
-        // 3. Создать несколько классов:
-        // 3.1 Здание. Имеет только жизни.
-        // 3.2 Персноаж. Имеет и жизни, и усталость
+        List<Notebook> notebooks = new LinkedList<>();
+        IntStream.range(0, 10)
+                .map(i -> i)
+                .forEach(i -> notebooks.add(new Notebook(genName(), genMemory(), genPrice())));
 
+        separator();
+        printNotebooks(notebooks);
+        separator();
+        Collections.sort(notebooks);
+        printNotebooks(notebooks);
+        separator();
 
-        Building building = new Building(100, 90);
-        Person person = new Person(100, 73, 100, 55);
+        notebooks.sort((Notebook a, Notebook b) -> a.price - b.price);
+        printNotebooks(notebooks);
+        separator();
+        notebooks.sort((Notebook a, Notebook b) -> b.price - a.price);
+        printNotebooks(notebooks);
+        separator();
 
-        Render render = new Render();
-        render.render(building); // 40 - написано красным цветом
-        render.render(person);
-    }
-
-    static class Render {
-
-        public void render(Object object) {
-            // TODO: 06.03.2023 Добавить реализацию
-            System.out.println(object.getClass());
-            if (object instanceof HasHealthPoint hasHealthPoint) {
-                int count = 0;
-                int health = ((HasHealthPoint) object).getCurrentHealthPoint();
-                int maxHealth = ((HasHealthPoint) object).getMaxHealthPoint();
-                System.out.print("Health: [ ");
-                while (count <= health) {
-                    if (count < 25) {
-                        System.out.print(ANSI_BLACK + "#" + ANSI_RESET);
-                    } else if (count < 51) {
-                        System.out.print(ANSI_RED + "#" + ANSI_RESET);
-                    } else {
-                        System.out.print(ANSI_GREEN + "#" + ANSI_RESET);
-                    }
-
-                    count++;
-                }
-                while (count < maxHealth) {
-                    System.out.print(" ");
-                    count++;
-                }
-                System.out.println(" ]");
-
-
-            }
-            if (object instanceof Tiredness tiredness) {
-                int count = 0;
-                int energy = ((Tiredness) object).getCurrentEnergy();
-                int maxEnergy = ((Tiredness) object).getMaxEnergy();
-                System.out.print("Energy: [ ");
-                while (count <= energy) {
-                    if (count < 25) {
-                        System.out.print(ANSI_BLACK + "*" + ANSI_RESET);
-                    } else if (count < 51) {
-                        System.out.print(ANSI_RED + "*" + ANSI_RESET);
-                    } else {
-                        System.out.print(ANSI_GREEN + "*" + ANSI_RESET);
-                    }
-
-                    count++;
-                }
-                while (count < maxEnergy) {
-                    System.out.print(" ");
-                    count++;
-                }
-                System.out.println(" ]");
-
-
-            }
-        }
+        notebooks.sort((Notebook a, Notebook b) -> a.memory - b.memory);
+        printNotebooks(notebooks);
+        separator();
 
     }
 
-    interface HasHealthPoint {
+    static class Notebook implements Comparable<Notebook> {
+        private final String name;
+        int memory;
+        int price;
 
-        int getMaxHealthPoint();
+        public Notebook(String name, int memory, int price) {
 
-        int getCurrentHealthPoint();
-
-    }
-
-    interface Tiredness {
-
-        // Максимальное значение уровеня бодрости объекта
-        int getMaxEnergy();
-
-        // Текущее значение уровеня бодрости объекта
-        int getCurrentEnergy();
-
-    }
-
-    static class Person implements HasHealthPoint, Tiredness {
-
-        private final int maxHealthPoint;
-        private final int currentHealthPoint;
-
-        private final int maxEnergy;
-        private final int currentEnergy;
-
-        public Person(int maxHealthPoint, int currentHealthPoint,
-                      int maxEnergy, int currentEnergy) {
-            this.maxHealthPoint = maxHealthPoint;
-            this.currentHealthPoint = currentHealthPoint;
-            this.currentEnergy = currentEnergy;
-            this.maxEnergy = maxEnergy;
+            this.name = name;
+            this.memory = memory;
+            this.price = price;
         }
 
         @Override
-        public int getMaxHealthPoint() {
-            return maxHealthPoint;
+        public String toString() {
+            return String.format("| %-10s | %-5s | %-8s |", name, memory, price);
         }
 
         @Override
-        public int getCurrentHealthPoint() {
-            return currentHealthPoint;
-        }
-
-        @Override
-        public int getMaxEnergy() {
-            return maxEnergy;
-        }
-
-        @Override
-        public int getCurrentEnergy() {
-            return currentEnergy;
+        public int compareTo(Notebook o) {
+            return Integer.compare(this.name.compareTo(o.name), 0);
         }
     }
 
-    static class Building implements HasHealthPoint {
-
-        private final int maxHealthPoint;
-        private final int currentHealthPoint;
-
-        public Building(int maxHealthPoint, int currentHealthPoint) {
-            this.maxHealthPoint = maxHealthPoint;
-            this.currentHealthPoint = currentHealthPoint;
-        }
-
-        @Override
-        public int getMaxHealthPoint() {
-            return maxHealthPoint;
-        }
-
-        @Override
-        public int getCurrentHealthPoint() {
-            return currentHealthPoint;
-        }
+    public static String genName() {
+        LinkedList<String> name = new LinkedList<>(List.of(
+                "MSI", "LENOVO", "SONY", "HP", "TOSHIBA", "HUAWEI", "XIAOMI",
+                "DELL", "APPLE", "SAMSUNG", "ASUS", "ACER"
+        ));
+        int index = new Random().nextInt(0, name.size());
+        return name.get(index);
     }
 
+    public static int genPrice() {
+        return new Random().nextInt(40000, 150000);
+    }
+
+    public static int genMemory() {
+        return new Random().nextInt(2, 128);
+    }
+
+    public static void separator() {
+        for (int i = 0; i < 33; i++) {
+            System.out.print("#");
+        }
+        System.out.println();
+
+    }
+
+    public static <T extends Notebook> void printNotebooks(List<T> list) {
+
+        for (Notebook n : list
+        ) {
+            System.out.println(n);
+        }
+    }
 }
+
